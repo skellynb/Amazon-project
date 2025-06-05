@@ -1,33 +1,10 @@
+const products = [];
 
+let productsHTML = '';
 
-import { products } from "../data/products.js";
-import { cart, UpdateCartQuantity } from "../data/cart.js";
-
-
-
-
-
-document.querySelectorAll ('.add-to-cart-button').forEach(button => {
-  button.addEventListener('click', () => {
-   const productId = button.dataset.productId; 
-   addToCart(productId);
-  });
-});
-
-const productGrid = document.querySelector('.products-grid');
-
-const displayProduct = () => {
-
-  products.forEach(product => {
-    const checkMark = `images/icons/checkmark.png`
-    const centDollars = (product.priceCents / 100).toFixed(2);
-
-    const roundedRating = Math.round(product.rating.stars * 10);
-
-    const starImage = `images/ratings/rating-${roundedRating}.png`;
-
-    const productHtml = `
-    <div class="product-container">
+products.forEach((product) => {
+   productsHTML += `
+  <div class="product-container">
     <div class="product-image-container">
      <img class="product-image"
               src="${product.image}">
@@ -38,13 +15,14 @@ const displayProduct = () => {
           
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="${starImage}">
+              src="images/ratings/rating-${product.rating.stars * 10}.png"
+
             <div class="product-rating-count link-primary">
               ${product.rating.count}
             </div>
           </div>
           <div class="product-price">
-           ${centDollars}
+           $${(product.priceCents / 100).toFixed(2)}
           </div>
 
           <div class="product-quantity-container ">
@@ -73,10 +51,9 @@ const displayProduct = () => {
             Add to Cart
           </button>
         </div>
-    `;
-    productGrid.innerHTML += productHtml
-  });
-};
-displayProduct();
 
+  `;
+});
+console.log(productsHTML);
 
+document.querySelector('.js-product-grid').innerHTML = productsHTML;
