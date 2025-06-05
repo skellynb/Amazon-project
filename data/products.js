@@ -657,6 +657,38 @@
       "mens"
     ]
   },
+   {
+    id: "id2",
+    image: "images/products/backpack.jpg",
+    name: "Men's Full-Zip Hooded Fleece Sweatshirt",
+    rating: {
+      stars: 3.5,
+      count: 100
+    },
+    priceCents: 500,
+    keywords: [
+      "sweaters",
+      "hoodies",
+      "apparel",
+      "mens"
+    ]
+  },
+  {
+    id: "id2",
+    image: "images/products/umbrella.jpg",
+    name: "Men's Full-Zip Hooded Fleece Sweatshirt",
+    rating: {
+      stars: 3.5,
+      count: 100
+    },
+    priceCents: 500,
+    keywords: [
+      "sweaters",
+      "hoodies",
+      "apparel",
+      "mens"
+    ]
+  }
   
   
 ];
