@@ -1,6 +1,18 @@
 
 
 import { products } from "../data/products.js";
+import { cart, UpdateCartQuantity } from "../data/cart.js";
+
+
+
+
+
+document.querySelectorAll ('.add-to-cart-button').forEach(button => {
+  button.addEventListener('click', () => {
+   const productId = button.dataset.productId; 
+   addToCart(productId);
+  });
+});
 
 const productGrid = document.querySelector('.products-grid');
 
@@ -35,8 +47,8 @@ const displayProduct = () => {
            ${centDollars}
           </div>
 
-          <div class="product-quantity-container">
-            <select>
+          <div class="product-quantity-container ">
+            <select class = "js-quantity-select-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -57,7 +69,7 @@ const displayProduct = () => {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary Js-add-to-cart" data-product-id = "${product.id}">
             Add to Cart
           </button>
         </div>
@@ -66,3 +78,42 @@ const displayProduct = () => {
   });
 };
 displayProduct();
+
+
+document.querySelectorAll('.Js-add-to-cart').forEach((button) => {
+  button.addEventListener('click', () => {
+        const productId =button.dataset.productId;
+    
+        let matchingItem; 
+        cart.forEach((item) => {
+          if (productId === item.productId) {
+            matchingItem = item;
+          }
+        });
+        
+        const select = Number(document.querySelector(`.js-quantity-select-${productId}`).value) ;
+        
+        
+
+        if(matchingItem) {
+          
+          matchingItem.quantity += select;
+         
+        }else{
+
+        cart.push({
+          productId: productId,
+          quantity: 1,
+          quantity: select
+          
+        });
+      }
+  
+       UpdateCartQuantity()
+       
+  });
+ 
+
+});
+
+
