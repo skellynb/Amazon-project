@@ -73,7 +73,13 @@ function updateCartQuantity () {
     });
     
   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+  
 }
+
+updateCartQuantity();
+
+
+  
 
 document.querySelectorAll('.js-add-to-cart').forEach((button)=> {
   button.addEventListener('click', () => {
@@ -81,6 +87,7 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=> {
     addToCart(productId);
     updateCartQuantity();
    
+ 
 
   const added = document.querySelector(`.js-added-to-cart-${productId}`);
 added.classList.add('added-to-cart-visible');
