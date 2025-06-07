@@ -67,3 +67,16 @@ export function calculateCartQuantity() {
     return cartQuantity;
   
 }
+
+export function updateQuantity(productId, newQuantity) {
+  let sameItem;
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      sameItem = cartItem;
+    }
+  });
+
+  sameItem.quantity = newQuantity;
+
+  saveToStorage();
+}

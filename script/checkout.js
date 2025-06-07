@@ -1,4 +1,6 @@
-import { cart, removeFromCart, calculateCartQuantity } from "../data/cart.js";
+import { cart, removeFromCart, calculateCartQuantity,
+  updateQuantity
+ } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utility/money.js";
 
@@ -18,9 +20,9 @@ cart.forEach((cartItem) => {
   });
 
 
-  console.log(sameProduct);
+  
   cartSummaryHtml += `
-  <div class="cart-item-container js-cart-item-container-${sameProduct.id}">
+  <div class="cart-item-container js-cart-item-container-${sameProduct.id} ">
   <div class="delivery-date">
     Delivery date: Tuesday, June 21
   </div>
@@ -38,12 +40,15 @@ cart.forEach((cartItem) => {
       </div>
       <div class="product-quantity">
         <span>
-          Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+          Quantity: <span class="quantity-label js-quantity-label-${sameProduct.id}">${cartItem.quantity}</span>
         </span>
-        <span class="update-quantity-link link-primary">
+        <span class="update-quantity-link link-primary js-update-link" data-product-id = "${sameProduct.id}">
           Update
         </span>
-        <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${sameProduct.id}">
+        <input class ="quantity-input js-quantity-input-${sameProduct.id}">
+        <span class ="save-quantity-link link-primary js-save-link"data-product-id="${sameProduct.id}">Save</span>
+
+        <span class="delete-quantity-link link-primary js-delete-link"data-product-id="${sameProduct.id}">
           Delete
         </span>
       </div>
@@ -106,6 +111,7 @@ document.querySelectorAll('.js-delete-link').forEach((link)=> {
   const productId = link.dataset.productId;
   removeFromCart(productId);
   
+
   const container =document.querySelector(
     `.js-cart-item-container-${productId}`
   );
@@ -114,9 +120,59 @@ document.querySelectorAll('.js-delete-link').forEach((link)=> {
  });
 });
 
+
+
+
+
+document.querySelectorAll('.js-update-link').forEach((link) => {
+  link.addEventListener('click', () => {
+    
+    const productId= link.dataset.productId;
+    
+
+    const container=document.querySelector(`.js-cart-item-container-${productId}`);
+container.classList.add('is-editing-quantity');
+  });
+});
+
+document.querySelectorAll('.js-save-link').forEach((link) => {
+  link.addEventListener('click', () =>{
+     const productId = link.dataset.productId;
+
+    
+
+     
+
+     
+      const quantityInput = document.querySelector(
+        `.js-quantity-input-${productId}`
+      );
+      const newQuantity = Number(quantityInput.value);
+      if (newQuantity < 0 || newQuantity >= 1000) {
+        alert('Quantity must be at least 0 and less than 1000');
+        return;
+      }
+      updateQuantity(productId, newQuantity);
+
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
+     container.classList.remove('is-editing-quantity');
+      
+
+       const quantityLabel = document.querySelector(
+        `.js-quantity-label-${productId}`
+      );
+      quantityLabel.innerHTML = newQuantity;
+
+      updateCartQuantity();
+
+
+  });
+});
+
+
+
 function updateCartQuantity() {
 const cartQuantity = calculateCartQuantity();
     
      document.querySelector('.js-checkout-counter').innerHTML =`${cartQuantity} items` ;
 }
-
